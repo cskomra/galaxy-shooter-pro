@@ -7,12 +7,13 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Debug.Log("Starting...");
+        transform.position = new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        transform.Translate(Vector3.right * 5 * Time.deltaTime);
     }
 }

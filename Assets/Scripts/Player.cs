@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         _spawnManager = GameObject.FindGameObjectWithTag("SpawnManager");
-        transform.position = new Vector3(0, 0, 0);
+        transform.position = new Vector3(0, -3.8f, 0);
     }
 
     // Update is called once per frame

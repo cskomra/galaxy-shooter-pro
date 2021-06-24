@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
     }
 
     void FireLaser(){
-        Vector3 offset = transform.position + new Vector3(0, 0.8f, 0);
+        Vector3 offset = transform.position + new Vector3(0, 1.1f, 0);
         if(Input.GetKeyDown(KeyCode.Space) && Time.time > nextFire){
             nextFire = Time.time + _firerate;
             Instantiate(_laserPrefab, offset, Quaternion.identity);

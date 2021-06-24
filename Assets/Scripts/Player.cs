@@ -7,11 +7,15 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
-    private float _firerate = 0.15f;
+    private GameObject _trippleShotPrefab;
+    [SerializeField]
+    private float _fireRate = 0.15f;
     private float nextFire = 0.0f;
     [SerializeField]
     private int _lives = 3;
     private GameObject _spawnManager;
+    [SerializeField]
+    private bool _hasTrippleShot = false;
 
     // Start is called before the first frame update
     void Start()
@@ -31,8 +35,14 @@ public class Player : MonoBehaviour
     void FireLaser(){
         Vector3 offset = transform.position + new Vector3(0, 1.1f, 0);
         if(Input.GetKeyDown(KeyCode.Space) && Time.time > nextFire){
-            nextFire = Time.time + _firerate;
-            Instantiate(_laserPrefab, offset, Quaternion.identity);
+            nextFire = Time.time + _fireRate;
+            if(_hasTrippleShot){
+                // fire 3 lasers
+                Instantiate(_trippleShotPrefab, offset, Quaternion.identity);  
+            }else{
+                // fire 1 laser
+                Instantiate(_laserPrefab, offset, Quaternion.identity);
+            }
         }  
     }
 

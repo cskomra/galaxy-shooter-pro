@@ -8,11 +8,17 @@ public class Player : MonoBehaviour
     private float _speed = 3.5f;
     [SerializeField]
     private GameObject _laserPrefab;
+    [SerializeField]
+    private float _firerate = 0.15f;
+    private float nextFire = 0.0f;
+    [SerializeField]
+    private int _lives = 3;
+    private GameObject _spawnManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        // set the player's starting position
+        _spawnManager = GameObject.FindGameObjectWithTag("SpawnManager");
         transform.position = new Vector3(0, 0, 0);
     }
 
@@ -21,10 +27,14 @@ public class Player : MonoBehaviour
     {
         CalculateMovement();  
 
-        // given I hit the space key
-        // then Player fires a Laser prefab    
-        if(Input.GetKeyDown(KeyCode.Space)){
-            Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+        FireLaser();
+    }
+
+    void FireLaser(){
+        Vector3 offset = transform.position + new Vector3(0, 0.8f, 0);
+        if(Input.GetKeyDown(KeyCode.Space) && Time.time > nextFire){
+            nextFire = Time.time + _firerate;
+            Instantiate(_laserPrefab, offset, Quaternion.identity);
         }  
     }
 
@@ -51,6 +61,19 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(-rightBounds, transform.position.y, transform.position.z);
         }else if(transform.position.x <= leftBounds){
             transform.position = new Vector3(-leftBounds, transform.position.y, transform.position.z);
+        }
+    }
+
+
+    public void Damage(){
+        _lives -= 1;
+        if(_lives == 0){
+            Debug.Log("You died!");
+            Destroy(this.gameObject);
+            // when player dies, stop spawing...
+            if(_spawnManager){
+                _spawnManager.transform.GetComponent<SpawnManager>().OnPlayerDeath();
+            }
         }
     }
 }

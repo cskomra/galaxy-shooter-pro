@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : MonoBehaviour
 {
@@ -52,15 +50,15 @@ public class Player : MonoBehaviour
 
         //restrict bounds
         if(transform.position.y >= upperBounds){
-            transform.position = new Vector3(transform.position.x, upperBounds, transform.position.z);
+            transform.position = new Vector3(transform.position.x, upperBounds, 0);
         }else if(transform.position.y <= lowerBounds){
-            transform.position = new Vector3(transform.position.x, lowerBounds, transform.position.z);
+            transform.position = new Vector3(transform.position.x, lowerBounds, 0);
         }
 
         if(transform.position.x >= rightBounds){
-            transform.position = new Vector3(-rightBounds, transform.position.y, transform.position.z);
+            transform.position = new Vector3(-rightBounds, transform.position.y, 0);
         }else if(transform.position.x <= leftBounds){
-            transform.position = new Vector3(-leftBounds, transform.position.y, transform.position.z);
+            transform.position = new Vector3(-leftBounds, transform.position.y, 0);
         }
     }
 

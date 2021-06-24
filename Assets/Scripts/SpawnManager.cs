@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -15,12 +14,6 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(SpawnGameObjects(5.0f));
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     // spawn game objects every 5 seconds

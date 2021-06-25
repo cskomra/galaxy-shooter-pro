@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Player : MonoBehaviour
 {
@@ -83,5 +84,15 @@ public class Player : MonoBehaviour
                 _spawnManager.transform.GetComponent<SpawnManager>().OnPlayerDeath();
             }
         }
+    }
+
+    public void setPowerUpOn(){
+        _hasTrippleShot = true;
+        StartCoroutine(PowerDown(5.0f));
+    }
+
+    private IEnumerator PowerDown(float waitTime){
+        yield return new WaitForSeconds(waitTime);
+        _hasTrippleShot = false;
     }
 }

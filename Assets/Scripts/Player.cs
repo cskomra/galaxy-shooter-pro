@@ -4,7 +4,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 3.5f;
+    private float _speed = 5f;
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
@@ -15,8 +15,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _lives = 3;
     private GameObject _spawnManager;
-    [SerializeField]
+
     private bool _hasTrippleShot = false;
+    private bool _hasShield = false;
 
     // Start is called before the first frame update
     void Start()
@@ -75,7 +76,13 @@ public class Player : MonoBehaviour
 
 
     public void Damage(){
+        
+        if(_hasShield){
+            _hasShield = false;
+            return; 
+        }
         _lives -= 1;
+        Debug.Log("Lives: " + _lives);
         if(_lives == 0){
             Debug.Log("You died!");
             Destroy(this.gameObject);
@@ -86,13 +93,32 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void setPowerUpOn(){
-        _hasTrippleShot = true;
+    public void PowerUp(int powerupId){
+        
+        switch(powerupId){
+            case 0:
+                Debug.Log(powerupId + " Tripple Shot");
+                _hasTrippleShot = true;
+                break;
+            case 1:
+                Debug.Log(powerupId + " Speed Boost");
+                _speed = 10f;
+                break;
+            case 2:
+                Debug.Log(powerupId + " Shields Collected");
+                _hasShield = true;
+                break;
+            default:
+                Debug.Log("unknown powerup");
+                break;
+        }
         StartCoroutine(PowerDown(5.0f));
     }
 
     private IEnumerator PowerDown(float waitTime){
         yield return new WaitForSeconds(waitTime);
         _hasTrippleShot = false;
+        _speed = 5f;
+        _hasShield = false;
     }
 }

@@ -19,6 +19,7 @@ public class SpawnManager : MonoBehaviour
     }
 
     private IEnumerator SpawnEnemies(float waitTime){
+        Debug.Log("Keep Spawning = " + _keepSpawning);
         while(_keepSpawning){
             Vector3 spawnPos = new Vector3(Random.Range(-8f, 8f), 7, 0);
             GameObject enemy = Instantiate(_enemyPrefab, spawnPos, Quaternion.identity);

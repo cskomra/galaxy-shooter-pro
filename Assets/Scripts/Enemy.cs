@@ -7,6 +7,13 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     public GameObject _enemyPrefab;
 
+    private const int _POINTS = 10;
+    private Player _player;
+
+    void Start(){
+        _player = GameObject.Find("Player").transform.GetComponent<Player>();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -21,17 +28,24 @@ public class Enemy : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other){
-        
+        //Player player;
         if(other.tag == ("Player")){
-            Player player = other.transform.GetComponent<Player>();
-            if(player){
-                player.Damage();
+            //player = other.transform.GetComponent<Player>();
+            if(_player){
+                _player.Damage();
             }
             Destroy(this.gameObject);
         }
         else if(other.tag == ("Laser")){
+            // get handle to player
+            //player = GameObject.FindGameObjectWithTag("Player").transform.GetComponent<Player>();
             Destroy(other.gameObject);
             Destroy(this.gameObject);
+            //increase player.score
+            if(_player){
+                Debug.Log("Adding to Score");
+                _player.AddToScore(_POINTS);
+            }
         }
 
     }

@@ -9,20 +9,37 @@ public class Player : MonoBehaviour
     private GameObject _laserPrefab;
     [SerializeField]
     private GameObject _trippleShotPrefab;
+
+    [SerializeField]
+    private GameObject _shield;
+
     [SerializeField]
     private float _fireRate = 0.15f;
     private float nextFire = 0.0f;
     [SerializeField]
     private int _lives = 3;
-    private GameObject _spawnManager;
+    private SpawnManager _spawnManager;
+    private UIManager _uiManager;
+
+    private float _powerupDuration = 5.0f;
 
     private bool _hasTrippleShot = false;
     private bool _hasShield = false;
+    private int _score;
 
     // Start is called before the first frame update
     void Start()
     {
-        _spawnManager = GameObject.FindGameObjectWithTag("SpawnManager");
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+        if(!_spawnManager){
+            Debug.Log("Spawn Manager is NULL.");
+        }
+
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        if(!_uiManager){
+            Debug.Log("UI Manager is NULL.");
+        }
+
         transform.position = new Vector3(0, -3.8f, 0);
     }
 
@@ -83,12 +100,13 @@ public class Player : MonoBehaviour
         }
         _lives -= 1;
         Debug.Log("Lives: " + _lives);
+        _uiManager.UpdateLives(_lives);        
         if(_lives == 0){
-            Debug.Log("You died!");
+            _uiManager.GameOver();
             Destroy(this.gameObject);
             // when player dies, stop spawing...
             if(_spawnManager){
-                _spawnManager.transform.GetComponent<SpawnManager>().OnPlayerDeath();
+                _spawnManager.OnPlayerDeath();
             }
         }
     }
@@ -96,29 +114,45 @@ public class Player : MonoBehaviour
     public void PowerUp(int powerupId){
         
         switch(powerupId){
-            case 0:
-                Debug.Log(powerupId + " Tripple Shot");
+            case 0: //Triple shot
+                Debug.Log(powerupId + " Triple Shot");
                 _hasTrippleShot = true;
                 break;
-            case 1:
+            case 1: //Speed boost
                 Debug.Log(powerupId + " Speed Boost");
                 _speed = 10f;
                 break;
-            case 2:
-                Debug.Log(powerupId + " Shields Collected");
+            case 2: //Shield
+                Debug.Log(powerupId + " Shield Collected");
                 _hasShield = true;
+                //enable shield visualizer
+                _shield.SetActive(true);
                 break;
             default:
                 Debug.Log("unknown powerup");
                 break;
         }
-        StartCoroutine(PowerDown(5.0f));
+        StartCoroutine(PowerDown(powerupId, _powerupDuration));
     }
 
-    private IEnumerator PowerDown(float waitTime){
+    private IEnumerator PowerDown(int powerupId, float waitTime){
         yield return new WaitForSeconds(waitTime);
-        _hasTrippleShot = false;
-        _speed = 5f;
-        _hasShield = false;
+        switch(powerupId){
+            case 0:
+                _hasTrippleShot = false;
+                break;
+            case 1:
+                _speed = 5f;
+                break;
+            case 2:
+                _hasShield = false;
+                _shield.SetActive(false);
+                break;
+        }
+    }
+
+    public void AddToScore(int points){
+        _score += points;
+        _uiManager.UpdateScore(_score);
     }
 }

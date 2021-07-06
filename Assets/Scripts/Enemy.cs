@@ -2,6 +2,11 @@
 
 public class Enemy : MonoBehaviour
 {
+    private AudioManager _audioManager;
+
+    [SerializeField]
+    private AudioClip _explosionSound;
+
     [SerializeField]
     private float _speed = 4.0f;
     [SerializeField]
@@ -16,13 +21,18 @@ public class Enemy : MonoBehaviour
     void Start(){
         _player = GameObject.Find("Player").transform.GetComponent<Player>();
         if(!_player){
-            Debug.Log("Player is NULL");
+            Debug.LogError("Player is NULL");
         }
 
         //assign component
         _enemyAnimator = GetComponent<Animator>();
         if(!_enemyAnimator){
-            Debug.Log("Enemy Animator is NULL");
+            Debug.LogError("Enemy Animator is NULL");
+        }
+
+        _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
+        if(!_audioManager){
+            Debug.LogError("Audio Manager is NULL.");
         }
     }
 
@@ -41,9 +51,12 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other){
         
+        _audioManager.PlayAudio(_explosionSound);
+        
         if(other.tag == ("Player")){
             _enemyAnimator.SetTrigger("OnEnemyDeath");
             _speed = 0;
+            
             Destroy(this.gameObject, 2f);
             if(_player){
                 _player.Damage();
@@ -51,9 +64,11 @@ public class Enemy : MonoBehaviour
             
         }
         else if(other.tag == ("Laser")){
+            
             Destroy(other.gameObject);
             _enemyAnimator.SetTrigger("OnEnemyDeath");
             _speed = 0;
+            
             Destroy(this.gameObject, 2f);
             
             Debug.Log("Adding to Score");

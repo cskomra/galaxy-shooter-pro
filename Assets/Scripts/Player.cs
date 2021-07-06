@@ -27,18 +27,16 @@ public class Player : MonoBehaviour
     private bool _hasShield = false;
     private int _score;
 
-    [SerializeField]
-    private AudioManager _audioManager;
+    
 
     [SerializeField]
     private GameObject _rightEngine, _leftEngine;
     
     [Header("Audio and Sound Effects")]
-    private AudioSource _audioSource;
-    [SerializeField]
     private AudioClip _laserShotSound;
     [SerializeField]
     private AudioClip _explosionSound;
+    private AudioManager _audioManager;
 
     // Start is called before the first frame update
     void Start()
@@ -53,11 +51,10 @@ public class Player : MonoBehaviour
             Debug.LogError("UI Manager is NULL.");
         }
 
-        _audioSource = GetComponent<AudioSource>();
-        if(!_audioSource){
-            Debug.LogError("'_audioSource' is NULL.");
+        _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
+        if(!_audioManager){
+            Debug.LogError("Audio Manager is NULL.");
         }
-
 
         transform.position = new Vector3(0, -3.8f, 0);
     }
@@ -81,8 +78,7 @@ public class Player : MonoBehaviour
                 // fire 1 laser
                 Instantiate(_laserPrefab, offset, Quaternion.identity);
             }
-            _audioSource.clip = _laserShotSound;
-            _audioSource.Play();
+            _audioManager.PlayAudio(_laserShotSound);
         }
     }
 

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
+    private AudioManager _audioManager;
+
+    [SerializeField]
+    private AudioClip _explosionSound;
 
     [SerializeField]
     private float _rotateSpeed = 19.0f;
@@ -22,6 +26,11 @@ public class Asteroid : MonoBehaviour
         if(!_spawnManager){
             Debug.Log("Spawn Manager is NULL.");
         }
+
+        _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
+        if(!_audioManager){
+            Debug.LogError("Audio Manager is NULL.");
+        }
     }
 
     void Update()
@@ -31,6 +40,7 @@ public class Asteroid : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other){
         if(other.tag == "Laser"){
+            _audioManager.PlayAudio(_explosionSound);
             _asteroidExplosion = Instantiate(_explosion, transform.position, Quaternion.identity);
             Destroy(other.gameObject);
 

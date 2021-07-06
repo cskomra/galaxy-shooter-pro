@@ -28,23 +28,36 @@ public class Player : MonoBehaviour
     private int _score;
 
     [SerializeField]
-    private GameObject _rightEngine;
-    [SerializeField]
-    private GameObject _leftEngine;
+    private AudioManager _audioManager;
 
+    [SerializeField]
+    private GameObject _rightEngine, _leftEngine;
+    
+    [Header("Audio and Sound Effects")]
+    private AudioSource _audioSource;
+    [SerializeField]
+    private AudioClip _laserShotSound;
+    [SerializeField]
+    private AudioClip _explosionSound;
 
     // Start is called before the first frame update
     void Start()
     {
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         if(!_spawnManager){
-            Debug.Log("Spawn Manager is NULL.");
+            Debug.LogError("Spawn Manager is NULL.");
         }
 
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         if(!_uiManager){
-            Debug.Log("UI Manager is NULL.");
+            Debug.LogError("UI Manager is NULL.");
         }
+
+        _audioSource = GetComponent<AudioSource>();
+        if(!_audioSource){
+            Debug.LogError("'_audioSource' is NULL.");
+        }
+
 
         transform.position = new Vector3(0, -3.8f, 0);
     }
@@ -68,7 +81,9 @@ public class Player : MonoBehaviour
                 // fire 1 laser
                 Instantiate(_laserPrefab, offset, Quaternion.identity);
             }
-        }  
+            _audioSource.clip = _laserShotSound;
+            _audioSource.Play();
+        }
     }
 
     void CalculateMovement(){
@@ -116,8 +131,10 @@ public class Player : MonoBehaviour
                 break;
             case 0:
                 _uiManager.GameOver();
+
                 Destroy(this.gameObject);
-                // when player dies, stop spawing...
+                _audioManager.PlayAudio(_explosionSound);
+
                 if(_spawnManager){
                     _spawnManager.OnPlayerDeath();
                 }

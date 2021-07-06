@@ -33,7 +33,13 @@ public class Player : MonoBehaviour
     private GameObject _rightEngine, _leftEngine;
     
     [Header("Audio and Sound Effects")]
+    
+    [SerializeField]
+    private AudioClip _powerupSound;
+
+    [SerializeField]
     private AudioClip _laserShotSound;
+    
     [SerializeField]
     private AudioClip _explosionSound;
     private AudioManager _audioManager;
@@ -141,7 +147,7 @@ public class Player : MonoBehaviour
     }
 
     public void PowerUp(int powerupId){
-        
+        _audioManager.PlayAudio(_powerupSound);
         switch(powerupId){
             case 0: //Triple shot
                 Debug.Log(powerupId + " Triple Shot");

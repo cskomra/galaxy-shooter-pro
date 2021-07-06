@@ -57,6 +57,7 @@ public class Enemy : MonoBehaviour
             _enemyAnimator.SetTrigger("OnEnemyDeath");
             _speed = 0;
             
+            Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2f);
             if(_player){
                 _player.Damage();
@@ -69,6 +70,7 @@ public class Enemy : MonoBehaviour
             _enemyAnimator.SetTrigger("OnEnemyDeath");
             _speed = 0;
             
+            Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2f);
             
             Debug.Log("Adding to Score");

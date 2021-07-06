@@ -27,6 +27,12 @@ public class Player : MonoBehaviour
     private bool _hasShield = false;
     private int _score;
 
+    [SerializeField]
+    private GameObject _rightEngine;
+    [SerializeField]
+    private GameObject _leftEngine;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -100,15 +106,25 @@ public class Player : MonoBehaviour
         }
         _lives -= 1;
         Debug.Log("Lives: " + _lives);
-        _uiManager.UpdateLives(_lives);        
-        if(_lives == 0){
-            _uiManager.GameOver();
-            Destroy(this.gameObject);
-            // when player dies, stop spawing...
-            if(_spawnManager){
-                _spawnManager.OnPlayerDeath();
-            }
-        }
+        _uiManager.UpdateLives(_lives);  
+        switch(_lives){
+            case 2: //first hit
+                _leftEngine.SetActive(true);
+                break;
+            case 1: //second hit
+                _rightEngine.SetActive(true);
+                break;
+            case 0:
+                _uiManager.GameOver();
+                Destroy(this.gameObject);
+                // when player dies, stop spawing...
+                if(_spawnManager){
+                    _spawnManager.OnPlayerDeath();
+                }
+                break;
+            default:
+                break;
+        }      
     }
 
     public void PowerUp(int powerupId){

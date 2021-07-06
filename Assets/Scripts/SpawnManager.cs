@@ -12,13 +12,14 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private bool _keepSpawning = true;
 
-    void Start()
-    {
+    public void StartSpawning(){
         StartCoroutine(SpawnEnemies(5.0f));
         StartCoroutine(SpawnPowerups());
     }
 
     private IEnumerator SpawnEnemies(float waitTime){
+
+        yield return new WaitForSeconds(3.0f);
         Debug.Log("Keep Spawning = " + _keepSpawning);
         while(_keepSpawning){
             Vector3 spawnPos = new Vector3(Random.Range(-8f, 8f), 7, 0);
@@ -29,6 +30,8 @@ public class SpawnManager : MonoBehaviour
     }
 
     private IEnumerator SpawnPowerups(){
+
+        yield return new WaitForSeconds(3.0f);
         while(_keepSpawning){
             int randomPowerUp = Random.Range(0, powerups.Length);
             Vector3 spawnPos = new Vector3(Random.Range(-8f, 8f), 7, 0);

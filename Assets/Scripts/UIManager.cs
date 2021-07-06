@@ -54,8 +54,8 @@ public class UIManager : MonoBehaviour
     }
 
     public void GameOver(){
-        _restartText.gameObject.SetActive(true);
         _gameOverText.gameObject.SetActive(true);
+        _restartText.gameObject.SetActive(true);
         _gameManager.GameOver();
         StartCoroutine(FlickerGameOver());
     }

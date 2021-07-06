@@ -10,8 +10,20 @@ public class Enemy : MonoBehaviour
     private const int _POINTS = 10;
     private Player _player;
 
+    //handle to animator componsent
+    private Animator _enemyAnimator;
+
     void Start(){
         _player = GameObject.Find("Player").transform.GetComponent<Player>();
+        if(!_player){
+            Debug.Log("Player is NULL");
+        }
+
+        //assign component
+        _enemyAnimator = GetComponent<Animator>();
+        if(!_enemyAnimator){
+            Debug.Log("Enemy Animator is NULL");
+        }
     }
 
     // Update is called once per frame
@@ -28,25 +40,24 @@ public class Enemy : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other){
-        //Player player;
+        
         if(other.tag == ("Player")){
-            //player = other.transform.GetComponent<Player>();
+            _enemyAnimator.SetTrigger("OnEnemyDeath");
+            _speed = 0;
+            Destroy(this.gameObject, 2f);
             if(_player){
                 _player.Damage();
             }
-            Destroy(this.gameObject);
+            
         }
         else if(other.tag == ("Laser")){
-            // get handle to player
-            //player = GameObject.FindGameObjectWithTag("Player").transform.GetComponent<Player>();
             Destroy(other.gameObject);
-            Destroy(this.gameObject);
-            //increase player.score
-            if(_player){
-                Debug.Log("Adding to Score");
-                _player.AddToScore(_POINTS);
-            }
+            _enemyAnimator.SetTrigger("OnEnemyDeath");
+            _speed = 0;
+            Destroy(this.gameObject, 2f);
+            
+            Debug.Log("Adding to Score");
+            _player.AddToScore(_POINTS);
         }
-
     }
 }

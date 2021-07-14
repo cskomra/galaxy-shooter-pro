@@ -47,8 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db9dfd87e772321428d89586d9e5707e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioManager: {fileID: 0}
+  _laserPrefab: {fileID: 5670451903350425909, guid: eb088769934b5b347b68ada2a48e2219,
+    type: 3}
   _explosionSound: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
+  _laserSound: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _speed: 4
   _enemyPrefab: {fileID: 457700248779185882}
 --- !u!212 &7946426612794677453

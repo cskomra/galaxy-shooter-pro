@@ -1,11 +1,16 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject _laserPrefab;
     private AudioManager _audioManager;
 
     [SerializeField]
     private AudioClip _explosionSound;
+    [SerializeField]
+    private AudioClip _laserSound;
 
     [SerializeField]
     private float _speed = 4.0f;
@@ -15,8 +20,10 @@ public class Enemy : MonoBehaviour
     private const int _POINTS = 10;
     private Player _player;
 
-    //handle to animator componsent
     private Animator _enemyAnimator;
+
+    private float _fireRate = 3.0f;
+    private float _canFire = -1f;
 
     void Start(){
         _player = GameObject.Find("Player").transform.GetComponent<Player>();
@@ -24,7 +31,6 @@ public class Enemy : MonoBehaviour
             Debug.LogError("Player is NULL");
         }
 
-        //assign component
         _enemyAnimator = GetComponent<Animator>();
         if(!_enemyAnimator){
             Debug.LogError("Enemy Animator is NULL");
@@ -34,15 +40,29 @@ public class Enemy : MonoBehaviour
         if(!_audioManager){
             Debug.LogError("Audio Manager is NULL.");
         }
+
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // move down at 4m/sec
+        CalculateMovement();
+
+        if(Time.time > _canFire){
+            _fireRate = Random.Range(3f, 7f);
+            _canFire = Time.time + _fireRate;
+            GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+            for(int i = 0; i < lasers.Length; i++){
+                lasers[i].ActivateEnemyLaser();
+            }
+        }
+    }
+
+    void CalculateMovement(){
+
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
-        // if bottom of screen(-6.5), respown at top(6.5)
         if(transform.position.y < -4f){
             float randomX = Random.Range(-8f, 8f);
             transform.position = new Vector3(randomX, 5f, 0);
@@ -57,7 +77,7 @@ public class Enemy : MonoBehaviour
             _enemyAnimator.SetTrigger("OnEnemyDeath");
             _speed = 0;
             
-            Destroy(GetComponent<Collider2D>());
+            Destroy(GetComponent<Collider2D>(), 2f);
             Destroy(this.gameObject, 2f);
             if(_player){
                 _player.Damage();
@@ -70,7 +90,7 @@ public class Enemy : MonoBehaviour
             _enemyAnimator.SetTrigger("OnEnemyDeath");
             _speed = 0;
             
-            Destroy(GetComponent<Collider2D>());
+            Destroy(GetComponent<Collider2D>(), 2f);
             Destroy(this.gameObject, 2f);
             
             Debug.Log("Adding to Score");

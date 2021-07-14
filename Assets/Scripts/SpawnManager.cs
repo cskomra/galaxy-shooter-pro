@@ -5,6 +5,7 @@ public class SpawnManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject _enemyPrefab;
+    
     [SerializeField]
     private GameObject[] powerups;
     [SerializeField]
@@ -17,15 +18,15 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(SpawnPowerups());
     }
 
-    private IEnumerator SpawnEnemies(float waitTime){
+    private IEnumerator SpawnEnemies(float waitToSpawn){
 
         yield return new WaitForSeconds(3.0f);
         Debug.Log("Keep Spawning = " + _keepSpawning);
         while(_keepSpawning){
-            Vector3 spawnPos = new Vector3(Random.Range(-8f, 8f), 7, 0);
+            Vector3 spawnPos = new Vector3(Random.Range(-8f, 8f), 6, 0);
             GameObject enemy = Instantiate(_enemyPrefab, spawnPos, Quaternion.identity);
             enemy.transform.parent = _enemyContainer.transform;
-            yield return new WaitForSeconds(waitTime);
+            yield return new WaitForSeconds(waitToSpawn);
         }
     }
 

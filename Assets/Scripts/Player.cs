@@ -14,6 +14,9 @@ public class Player : MonoBehaviour
     private GameObject _shield;
 
     [SerializeField]
+    private GameObject _thruster;
+
+    [SerializeField]
     private float _fireRate = 0.15f;
     private float nextFire = 0.0f;
     [SerializeField]
@@ -71,6 +74,7 @@ public class Player : MonoBehaviour
         CalculateMovement();  
 
         FireLaser();
+
     }
 
     void FireLaser(){
@@ -96,6 +100,8 @@ public class Player : MonoBehaviour
         float rightBounds = 11.3f;
         float leftBounds = -11.3f;
 
+        ManageSpeed();
+
         // move player
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
         transform.Translate(direction * _speed * Time.deltaTime);
@@ -111,6 +117,20 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(-rightBounds, transform.position.y, 0);
         }else if(transform.position.x <= leftBounds){
             transform.position = new Vector3(-leftBounds, transform.position.y, 0);
+        }
+    }
+
+    void ManageSpeed(){
+        float thrustSpeed = 4.0f;
+
+        if(Input.GetKeyDown(KeyCode.LeftShift)){
+            _speed += thrustSpeed;
+            _thruster.SetActive(true);
+        }
+
+        if(Input.GetKeyUp(KeyCode.LeftShift)){
+            _speed -= thrustSpeed;
+            _thruster.SetActive(false);
         }
     }
 

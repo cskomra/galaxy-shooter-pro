@@ -3,51 +3,36 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]
-    private float _speed = 5f;
-    [SerializeField]
-    private GameObject _laserPrefab;
-    [SerializeField]
-    private GameObject _trippleShotPrefab;
-
-    [SerializeField]
-    private GameObject _shield;
-
-    [SerializeField]
-    private GameObject _thruster;
-
-    [SerializeField]
-    private float _fireRate = 0.15f;
-    private float nextFire = 0.0f;
-    [SerializeField]
-    private int _lives = 3;
+    [Header("Managers")]
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
-
-    private float _powerupDuration = 5.0f;
-
-    private bool _hasTrippleShot = false;
-    private bool _hasShield = false;
     private int _score;
-
-    
-
-    [SerializeField]
-    private GameObject _rightEngine, _leftEngine;
-    
-    [Header("Audio and Sound Effects")]
-    
-    [SerializeField]
-    private AudioClip _powerupSound;
-
-    [SerializeField]
-    private AudioClip _laserShotSound;
-    
-    [SerializeField]
-    private AudioClip _explosionSound;
     private AudioManager _audioManager;
 
-    // Start is called before the first frame update
+    [Header("Health")]
+    [SerializeField] private int _lives = 3;
+
+    [Header("Movement")]
+    [SerializeField] private float _speed = 5f;
+    [SerializeField] private GameObject _thruster;
+    [SerializeField] private GameObject _rightEngine, _leftEngine;
+
+    [Header("Power")]
+    private float _powerupDuration = 5.0f;
+    [SerializeField] private float _fireRate = 0.15f;
+    private float nextFire = 0.0f;
+    [SerializeField] private GameObject _laserPrefab;
+    [SerializeField] private GameObject _trippleShotPrefab;
+    private bool _hasTrippleShot = false;
+    [SerializeField] private GameObject _shield;
+    private bool _hasShield = false;
+
+    
+    [Header("Audio")]
+    [SerializeField] private AudioClip _powerupSound;
+    [SerializeField] private AudioClip _laserShotSound;
+    [SerializeField] private AudioClip _explosionSound;
+
     void Start()
     {
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
@@ -133,7 +118,6 @@ public class Player : MonoBehaviour
             _thruster.SetActive(false);
         }
     }
-
 
     public void Damage(){
         

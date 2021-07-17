@@ -46,10 +46,12 @@ public class UIManager : MonoBehaviour
     }
 
     public void UpdateLives(int currentLives){
-        if(_livesImage){
-            _livesImage.sprite = _livesSprites[currentLives];
-        }else{
-            Debug.Log("Lives Image is NULL");
+        if(!_gameManager.isGameOver()){
+            if(_livesImage){
+                _livesImage.sprite = _livesSprites[currentLives];
+            }else{
+                Debug.Log("Lives Image is NULL");
+            }
         }
     }
 

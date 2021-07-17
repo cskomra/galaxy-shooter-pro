@@ -122,7 +122,7 @@ public class Player : MonoBehaviour
     public void Damage(){
         
         if(_hasShield){
-            _hasShield = false;
+            //_hasShield = false;
             return; 
         }
         _lives -= 1;
@@ -156,10 +156,12 @@ public class Player : MonoBehaviour
             case 0: //Triple shot
                 Debug.Log(powerupId + " Triple Shot");
                 _hasTrippleShot = true;
+                StartCoroutine(PowerDown(powerupId, _powerupDuration));
                 break;
             case 1: //Speed boost
                 Debug.Log(powerupId + " Speed Boost");
                 _speed = 10f;
+                StartCoroutine(PowerDown(powerupId, _powerupDuration));
                 break;
             case 2: //Shield
                 Debug.Log(powerupId + " Shield Collected");
@@ -171,7 +173,6 @@ public class Player : MonoBehaviour
                 Debug.Log("unknown powerup");
                 break;
         }
-        StartCoroutine(PowerDown(powerupId, _powerupDuration));
     }
 
     private IEnumerator PowerDown(int powerupId, float waitTime){

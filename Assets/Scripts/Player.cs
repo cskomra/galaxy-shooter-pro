@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
 
     [Header("Health")]
     [SerializeField] private int _lives = 3;
+    private int _hitWithShield = 0;
 
     [Header("Movement")]
     [SerializeField] private float _speed = 5f;
@@ -120,10 +121,25 @@ public class Player : MonoBehaviour
     }
 
     public void Damage(){
-        
         if(_hasShield){
-            //_hasShield = false;
-            return; 
+            _hitWithShield++;
+            Debug.Log("hitWithShield = " + _hitWithShield);
+            switch(_hitWithShield){
+                case 1: //1st hit, change color to #096cf7
+                    _shield.GetComponent<SpriteRenderer>().color = Color.blue;
+                    break;
+                case 2: //2nd hit, change color to #356dba
+                    _shield.GetComponent<SpriteRenderer>().color = Color.red;
+                    break;
+                case 3: //3rd hit, 
+                    _hitWithShield = 0;
+                    _hasShield = false;
+                    _shield.SetActive(false);
+                    break;
+                default:
+                    break;
+            }
+            return;
         }
         _lives -= 1;
         Debug.Log("Lives: " + _lives);

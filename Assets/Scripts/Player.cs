@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
 
     [Header("Health")]
     [SerializeField] private int _lives = 3;
-    private int _hitWithShield = 0;
+    private int _numHits = 0;
 
     [Header("Movement")]
     [SerializeField] private float _speed = 5f;
@@ -121,18 +121,18 @@ public class Player : MonoBehaviour
     }
 
     public void Damage(){
+        _numHits++;
+        Debug.Log("numHits = " + _numHits);
         if(_hasShield){
-            _hitWithShield++;
-            Debug.Log("hitWithShield = " + _hitWithShield);
-            switch(_hitWithShield){
-                case 1: //1st hit, change color to #096cf7
+            switch(_numHits){
+                case 2: //1st hit, change color to #096cf7
                     _shield.GetComponent<SpriteRenderer>().color = Color.blue;
                     break;
-                case 2: //2nd hit, change color to #356dba
-                    _shield.GetComponent<SpriteRenderer>().color = Color.red;
+                case 4: //2nd hit, change color to #356dba
+                    _shield.GetComponent<SpriteRenderer>().color = Color.cyan;
                     break;
-                case 3: //3rd hit, 
-                    _hitWithShield = 0;
+                case 6: //3rd hit, 
+                    _numHits = 0;
                     _hasShield = false;
                     _shield.SetActive(false);
                     break;
@@ -141,9 +141,14 @@ public class Player : MonoBehaviour
             }
             return;
         }
-        _lives -= 1;
-        Debug.Log("Lives: " + _lives);
-        _uiManager.UpdateLives(_lives);  
+
+        if(_numHits == 2){
+            _lives -= 1;
+            _uiManager.UpdateLives(_lives);  
+            Debug.Log("Lives: " + _lives);
+            _numHits = 0;
+        }
+
         switch(_lives){
             case 2: //first hit
                 _leftEngine.SetActive(true);
@@ -163,7 +168,7 @@ public class Player : MonoBehaviour
                 break;
             default:
                 break;
-        }      
+        }             
     }
 
     public void PowerUp(int powerupId){

@@ -20,6 +20,8 @@ public class Player : MonoBehaviour
 
     [Header("Power")]
     private float _powerupDuration = 5.0f;
+    [SerializeField]
+    private int _shotsRemaining = 15;
     [SerializeField] private float _fireRate = 0.15f;
     private float nextFire = 0.0f;
     [SerializeField] private GameObject _laserPrefab;
@@ -64,18 +66,24 @@ public class Player : MonoBehaviour
     }
 
     void FireLaser(){
-        Vector3 offset = transform.position + new Vector3(0, 1.1f, 0);
-        if(Input.GetKeyDown(KeyCode.Space) && Time.time > nextFire){
-            nextFire = Time.time + _fireRate;
-            if(_hasTrippleShot){
-                // fire 3 lasers
-                Instantiate(_trippleShotPrefab, offset, Quaternion.identity);  
-            }else{
-                // fire 1 laser
-                Instantiate(_laserPrefab, offset, Quaternion.identity);
+        if(_shotsRemaining > 0){
+            Vector3 offset = transform.position + new Vector3(0, 1.1f, 0);
+            if(Input.GetKeyDown(KeyCode.Space) && Time.time > nextFire){
+                nextFire = Time.time + _fireRate;
+                if(_hasTrippleShot){
+                    // fire 3 lasers
+                    Instantiate(_trippleShotPrefab, offset, Quaternion.identity);  
+                }else{
+                    // fire 1 laser
+                    Instantiate(_laserPrefab, offset, Quaternion.identity);
+                }
+                _audioManager.PlayAudio(_laserShotSound);
+                ManageAmmo();
             }
-            _audioManager.PlayAudio(_laserShotSound);
+        }else{
+            Debug.Log("Out of AMMO!");
         }
+        
     }
 
     void CalculateMovement(){
@@ -216,4 +224,14 @@ public class Player : MonoBehaviour
         _score += points;
         _uiManager.UpdateScore(_score);
     }
+
+    public void ManageAmmo(){
+        _shotsRemaining--;
+        _uiManager.UpdateAmmo(_shotsRemaining);
+        //TODO: if 10 shots remaining, text color = yello
+        //TODO: if 5 shots remaining, text color = red
+        //TODO: if 3 shots remaining, blink text
+        //TODO: if 0 shots remaining, stop blink
+    }
+
 }

@@ -6,17 +6,12 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     //handle to Text
-    [SerializeField]
-    private Text _scoreText;
-    [SerializeField]
-    private Text _restartText;
-    [SerializeField]
-    private Text _gameOverText;
-
-    [SerializeField]
-    private Image _livesImage;
-    [SerializeField]
-    private Sprite[] _livesSprites;
+    [SerializeField] private Text _scoreText;
+    [SerializeField] private Text _ammoText;
+    [SerializeField] private Text _restartText;
+    [SerializeField] private Text _gameOverText;
+    [SerializeField] private Image _livesImage;
+    [SerializeField] private Sprite[] _livesSprites;
 
     private GameManager _gameManager;
 
@@ -43,6 +38,10 @@ public class UIManager : MonoBehaviour
 
     public void UpdateScore(int score){
         _scoreText.text = "Score: " + score.ToString();
+    }
+
+    public void UpdateAmmo(int ammo){
+        _ammoText.text = "Ammo: " + ammo.ToString();
     }
 
     public void UpdateLives(int currentLives){

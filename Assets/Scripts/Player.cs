@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
     private float _powerupDuration = 5.0f;
     [SerializeField]
     private int _shotsRemaining = 15;
+    [SerializeField]
+    private int _ammoPowerupPoints = 2;
     [SerializeField] private float _fireRate = 0.15f;
     private float nextFire = 0.0f;
     [SerializeField] private GameObject _laserPrefab;
@@ -198,6 +200,10 @@ public class Player : MonoBehaviour
                 //enable shield visualizer
                 _shield.SetActive(true);
                 break;
+            case 3: //Ammo
+                Debug.Log(powerupId + " Ammo Collected");
+                AddToAmmo(_ammoPowerupPoints);
+                break;
             default:
                 Debug.Log("unknown powerup");
                 break;
@@ -223,6 +229,11 @@ public class Player : MonoBehaviour
     public void AddToScore(int points){
         _score += points;
         _uiManager.UpdateScore(_score);
+    }
+
+    private void AddToAmmo(int ammo){
+        _shotsRemaining += ammo;
+        _uiManager.UpdateAmmo(_shotsRemaining);
     }
 
     public void ManageAmmo(){

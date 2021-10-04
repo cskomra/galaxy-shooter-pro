@@ -1960,6 +1960,7 @@ MonoBehaviour:
   - {fileID: 4491865377560607093, guid: 373f83c53352799489b2c0ff2742dc45, type: 3}
   - {fileID: 4803498710825002192, guid: 0a8c0aa55521ecb4a80af71e44a849ae, type: 3}
   - {fileID: 1901932519179518729, guid: a6d42af21d87b6644910dc887e2e344b, type: 3}
+  - {fileID: 2010972053231725134, guid: 7e608c6acbfb79243b7783675c5f7e51, type: 3}
   _enemyContainer: {fileID: 349824616}
   _keepSpawning: 1
 --- !u!4 &1957374751

@@ -522,6 +522,7 @@ MonoBehaviour:
   _rightEngine: {fileID: 940095994}
   _leftEngine: {fileID: 2053094642}
   _shotsRemaining: 15
+  _ammoPowerupPoints: 2
   _fireRate: 0.15
   _laserPrefab: {fileID: 509711912147292006, guid: 59db0eb62a324074b9428dcc164cd8b0,
     type: 3}

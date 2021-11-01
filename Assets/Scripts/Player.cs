@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     [Header("Health")]
     [SerializeField] private int _lives = 3;
     private int _numHits = 0;
+    [SerializeField]
+    private int _healthPowerupPoints = 1;
 
     [Header("Movement")]
     [SerializeField] private float _speed = 5f;
@@ -159,11 +161,23 @@ public class Player : MonoBehaviour
             _numHits = 0;
         }
 
+        EngineManager(_lives);
+                    
+    }
+
+    void EngineManager(int lives){
+        Debug.Log("Live = " + _lives.ToString());
         switch(_lives){
-            case 2: //first hit
-                _leftEngine.SetActive(true);
+            case 3: // both engines working
+                _leftEngine.SetActive(false);
+                _rightEngine.SetActive(false);
                 break;
-            case 1: //second hit
+            case 2: // one working engine
+                _leftEngine.SetActive(true);
+                _rightEngine.SetActive(false);
+                break;
+            case 1: // no working engines
+                _leftEngine.SetActive(true);
                 _rightEngine.SetActive(true);
                 break;
             case 0:
@@ -178,7 +192,7 @@ public class Player : MonoBehaviour
                 break;
             default:
                 break;
-        }             
+        } 
     }
 
     public void PowerUp(int powerupId){
@@ -203,6 +217,10 @@ public class Player : MonoBehaviour
             case 3: //Ammo
                 Debug.Log(powerupId + " Ammo Collected");
                 AddToAmmo(_ammoPowerupPoints);
+                break;
+            case 4: //Health
+                Debug.Log(powerupId + " Health Collected");
+                AddToHealth(_healthPowerupPoints);
                 break;
             default:
                 Debug.Log("unknown powerup");
@@ -234,6 +252,14 @@ public class Player : MonoBehaviour
     private void AddToAmmo(int ammo){
         _shotsRemaining += ammo;
         _uiManager.UpdateAmmo(_shotsRemaining);
+    }
+
+    private void AddToHealth(int health){
+        if(_lives < 3){
+            _lives += health;
+            _uiManager.UpdateLives(_lives);
+            EngineManager(_lives);
+        }
     }
 
     public void ManageAmmo(){

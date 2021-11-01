@@ -517,6 +517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lives: 3
+  _healthPowerupPoints: 1
   _speed: 5
   _thruster: {fileID: 1439440633}
   _rightEngine: {fileID: 940095994}
@@ -1461,6 +1462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scoreText: {fileID: 1409059248}
   _ammoText: {fileID: 709823707}
+  _healthText: {fileID: 0}
   _restartText: {fileID: 1545560108}
   _gameOverText: {fileID: 1134083058}
   _livesImage: {fileID: 1783468280}
@@ -1661,7 +1663,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 75, y: -29}
+  m_AnchoredPosition: {x: 70, y: -29}
   m_SizeDelta: {x: 85, y: 51}
   m_Pivot: {x: 0.00000009685755, y: 0.9999999}
 --- !u!114 &1783468280
@@ -1962,6 +1964,7 @@ MonoBehaviour:
   - {fileID: 4803498710825002192, guid: 0a8c0aa55521ecb4a80af71e44a849ae, type: 3}
   - {fileID: 1901932519179518729, guid: a6d42af21d87b6644910dc887e2e344b, type: 3}
   - {fileID: 2010972053231725134, guid: 7e608c6acbfb79243b7783675c5f7e51, type: 3}
+  - {fileID: 5095342633688374792, guid: 14cf938c78a8ec7428a076d51c83200f, type: 3}
   _enemyContainer: {fileID: 349824616}
   _keepSpawning: 1
 --- !u!4 &1957374751

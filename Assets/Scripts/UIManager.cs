@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     //handle to Text
     [SerializeField] private Text _scoreText;
     [SerializeField] private Text _ammoText;
+    [SerializeField] private Text _healthText;
     [SerializeField] private Text _restartText;
     [SerializeField] private Text _gameOverText;
     [SerializeField] private Image _livesImage;

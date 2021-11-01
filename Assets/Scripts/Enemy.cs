@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     public GameObject _enemyPrefab;
 
     private const int _POINTS = 10;
+    private const int _POWERPOINTS = 15;
     private Player _player;
 
     private Animator _enemyAnimator;
@@ -84,7 +85,7 @@ public class Enemy : MonoBehaviour
             }
             
         }
-        else if(other.tag == ("Laser")){
+        else if(other.tag == ("Laser") || other.tag == "LaserPowerup"){
             
             Destroy(other.gameObject);
             _enemyAnimator.SetTrigger("OnEnemyDeath");
@@ -93,8 +94,15 @@ public class Enemy : MonoBehaviour
             Destroy(GetComponent<Collider2D>(), 2f);
             Destroy(this.gameObject, 2f);
             
-            Debug.Log("Adding to Score");
-            _player.AddToScore(_POINTS);
+            
+            if(other.tag == "Laser"){
+                Debug.Log("Adding to Score");
+                _player.AddToScore(_POINTS);
+            }else{
+                Debug.Log("POWER POINTS!!!!!");
+                _player.AddToScore(_POWERPOINTS);
+            }
+            
         }
     }
 }

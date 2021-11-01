@@ -39,7 +39,7 @@ public class Asteroid : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other){
-        if(other.tag == "Laser"){
+        if(other.tag == "Laser" || other.tag == "LaserPowerup"){
             _audioManager.PlayAudio(_explosionSound);
             _asteroidExplosion = Instantiate(_explosion, transform.position, Quaternion.identity);
             Destroy(other.gameObject);

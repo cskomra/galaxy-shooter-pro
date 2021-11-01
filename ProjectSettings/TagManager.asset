@@ -9,6 +9,7 @@ TagManager:
   - PowerUp
   - Canvas
   - EnemyLaser
+  - LaserPowerup
   layers:
   - Default
   - TransparentFX

@@ -27,9 +27,12 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _ammoPowerupPoints = 2;
     [SerializeField] private float _fireRate = 0.15f;
+    private bool _laserPowerOn = false;
     private float nextFire = 0.0f;
+    private float _laserPowerTime = 0.0f;
     [SerializeField] private GameObject _laserPrefab;
     [SerializeField] private GameObject _trippleShotPrefab;
+    [SerializeField] private GameObject _laserPowerupPrefab;
     private bool _hasTrippleShot = false;
     [SerializeField] private GameObject _shield;
     private bool _hasShield = false;
@@ -79,7 +82,21 @@ public class Player : MonoBehaviour
                     Instantiate(_trippleShotPrefab, offset, Quaternion.identity);  
                 }else{
                     // fire 1 laser
-                    Instantiate(_laserPrefab, offset, Quaternion.identity);
+                    int randomWeight = Random.Range(0, 10);
+                    if(randomWeight < 3 ) {
+                        if(_laserPowerOn == false){
+                            _laserPowerOn = true;
+                            _laserPowerTime = Time.time + 5;
+                        }
+                        if(Time.time < _laserPowerTime){
+                            Instantiate(_laserPowerupPrefab, offset, Quaternion.identity);
+                        }else{
+                            _laserPowerOn = false;
+                            Instantiate(_laserPrefab, offset, Quaternion.identity);
+                        }
+                    }else{
+                        Instantiate(_laserPrefab, offset, Quaternion.identity);
+                    }
                 }
                 _audioManager.PlayAudio(_laserShotSound);
                 ManageAmmo();

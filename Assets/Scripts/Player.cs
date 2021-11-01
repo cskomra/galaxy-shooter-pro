@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [Header("Managers")]
+    [Header("Components")]
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
     private int _score;
     private AudioManager _audioManager;
+    private CameraShake _cameraShake;
 
     [Header("Health")]
     [SerializeField] private int _lives = 3;
@@ -58,6 +59,11 @@ public class Player : MonoBehaviour
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         if(!_audioManager){
             Debug.LogError("Audio Manager is NULL.");
+        }
+
+        _cameraShake = GameObject.FindWithTag("MainCamera").transform.GetComponent<CameraShake>();
+        if(!_cameraShake){
+            Debug.Log("Main Camera is NULL.");
         }
 
         transform.position = new Vector3(0, -3.8f, 0);
@@ -179,6 +185,8 @@ public class Player : MonoBehaviour
         }
 
         EngineManager(_lives);
+
+        _cameraShake.StartShake();
                     
     }
 

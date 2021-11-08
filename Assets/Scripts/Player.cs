@@ -10,15 +10,22 @@ public class Player : MonoBehaviour
     private AudioManager _audioManager;
     private CameraShake _cameraShake;
 
+
     [Header("Health")]
     [SerializeField] private int _lives = 3;
     private int _numHits = 0;
     [SerializeField]
     private int _healthPowerupPoints = 1;
+    private PlayerHealth _playerHealth;
 
     [Header("Movement")]
     [SerializeField] private float _speed = 5f;
+    private float _initialSpeed;
     [SerializeField] private GameObject _thruster;
+    //[SerializeField] private float _thrusterMultiplier = 3f;
+    [SerializeField] private float _playerHealthFloat = 5f;
+    [SerializeField] private bool _thrusterIsAvailable = true;
+    //[SerializeField] private bool _thrusterInUse = false;
     [SerializeField] private GameObject _rightEngine, _leftEngine;
 
     [Header("Power")]
@@ -46,6 +53,8 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        _initialSpeed = _speed;
+
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         if(!_spawnManager){
             Debug.LogError("Spawn Manager is NULL.");
@@ -61,12 +70,18 @@ public class Player : MonoBehaviour
             Debug.LogError("Audio Manager is NULL.");
         }
 
+        _playerHealth = GetComponent<PlayerHealth>();
+        if(!_playerHealth){
+            Debug.LogError("Player Health is NULL.");
+        }
+
         _cameraShake = GameObject.FindWithTag("MainCamera").transform.GetComponent<CameraShake>();
         if(!_cameraShake){
             Debug.Log("Main Camera is NULL.");
         }
 
         transform.position = new Vector3(0, -3.8f, 0);
+        
     }
 
     // Update is called once per frame
@@ -141,18 +156,63 @@ public class Player : MonoBehaviour
         }
     }
 
+    void ResetSpeed(){
+        if(!_thrusterIsAvailable){
+            StartCoroutine(ThrusterCoolDownRoutine());
+        }
+        _speed = _initialSpeed;
+    }
+
+    IEnumerator ThrusterCoolDownRoutine(){
+        Debug.Log("Inside ThrusterCoolDownRoutine");
+        yield return new WaitForSeconds(1f);
+
+        while(!_thrusterIsAvailable){
+            _playerHealth.health += Time.deltaTime;
+            //_uiManager.UpdateThrusterSlider(_thrusterPowerLevel);
+
+            if(_playerHealth.health >= 100f){
+            //    _uiManager.ThrusterSliderColor(Color.blue);
+                _thrusterIsAvailable = true;
+            }
+            yield return null;
+        }
+    }
+
     void ManageSpeed(){
         float thrustSpeed = 4.0f;
 
-        if(Input.GetKeyDown(KeyCode.LeftShift)){
-            _speed += thrustSpeed;
-            _thruster.SetActive(true);
-        }
+        if(_thrusterIsAvailable){
+            if(Input.GetKeyDown(KeyCode.LeftShift)){
+                _speed += thrustSpeed;
+                _thruster.SetActive(true);
+                //_thrusterInUse = true;
 
-        if(Input.GetKeyUp(KeyCode.LeftShift)){
-            _speed -= thrustSpeed;
-            _thruster.SetActive(false);
+                //Use thrusters 
+                _playerHealth.health -= Time.deltaTime * 200.0f;
+                //_playerHealthFloat -= Time.deltaTime * 5.0f;
+                //Debug.Log("Mandage SPEED: " + _thrusterPowerLevel.ToString());
+                //_uiManager.UpdateThrusterSlider(_thrusterPowerLevel);
+
+                //Debug.Log("Inside ManageSpeed. _thrusterPowerLevel is " + _thrusterPowerLevel.ToString());
+                // enter cool down
+                if(_playerHealth.health <= 10f){
+                    //_uiManager.ThrusterSliderColor(Color.red);
+                    _thruster.SetActive(false);
+                    _thrusterIsAvailable = false;
+                    //_thrusterInUse = false;
+                    _playerHealth.health = 0;
+                    ResetSpeed();
+                }
+            }
+
+            if(Input.GetKeyUp(KeyCode.LeftShift)){
+                _speed -= thrustSpeed;
+                _thruster.SetActive(false);
+                //_thrusterInUse = false;
+            }
         }
+        
     }
 
     public void Damage(){

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class UIManager : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text _gameOverText;
     [SerializeField] private Image _livesImage;
     [SerializeField] private Sprite[] _livesSprites;
+    //[SerializeField] private Slider _thrusterSlider;
+    //[SerializeField] private GameObject _thrusterSliderFill;
+    //private Image _thrusterSliderFillImage;
 
     private GameManager _gameManager;
 
@@ -29,6 +33,17 @@ public class UIManager : MonoBehaviour
             Debug.Log("Game Manager is NULL.");
         }
 
+        /* _thrusterSliderFillImage = GameObject.Find("Fill").GetComponent<UnityEngine.UI.Image>();
+        if(!_thrusterSliderFillImage){
+            Debug.Log("Fill Image is NULL.");
+        }
+
+        _thrusterSliderFillImage.color = Color.blue; */
+
+        /* _thrusterSlider = GameObject.Find("Thruster_Slider").GetComponent<UnityEngine.UI.Slider>();
+        if(!_thrusterSlider){
+            Debug.Log("Slider is NULL.");
+        } */
     }
 
     // Update is called once per frame
@@ -54,6 +69,18 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+
+    /* public void UpdateThrusterSlider(float val){
+        Debug.Log("UPDATE SLIDER: " + val.ToString());
+        _thrusterSlider.value = val;
+        // fill.fillAmount
+        _thrusterSliderFill.GetComponent<Image>().fillAmount = val;
+        Debug.Log("Thruster VAL: " + _thrusterSlider.value.ToString());
+    }
+
+    public void ThrusterSliderColor(Color sliderColor){        
+        _thrusterSliderFillImage.color = sliderColor;
+    } */
 
     public void GameOver(){
         _gameOverText.gameObject.SetActive(true);

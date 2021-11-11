@@ -23,6 +23,8 @@ public class Enemy : MonoBehaviour
 
     private float _fireRate = 3.0f;
     private float _canFire = -1f;
+    private int _counter = 0;
+    private int _direction = 0;
 
     void Start(){
         _player = GameObject.Find("Player").transform.GetComponent<Player>();
@@ -44,6 +46,16 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        
+        if(_counter == 60){
+            int randomInt = Random.Range(0,3);
+            _direction = randomInt;
+            _counter = 0;
+        }else{
+            _counter++;
+        }
+
+        ChangeDirection(_direction);
         CalculateMovement();
 
         if(Time.time > _canFire){
@@ -60,12 +72,38 @@ public class Enemy : MonoBehaviour
 
     void CalculateMovement(){
 
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
-
         if(transform.position.y < -4f){
             float randomX = Random.Range(-8f, 8f);
             transform.position = new Vector3(randomX, 5f, 0);
         }
+    }
+
+    void LookAtPlayer(){
+        Vector3 playerPosition = _player.transform.position;
+        playerPosition.y = transform.position.y;
+        transform.LookAt(playerPosition);
+    }
+
+    void ChangeDirection(int caseNum){
+
+        switch(caseNum){
+            case 0:
+                transform.Translate(Vector3.down * _speed * Time.deltaTime);
+                break;
+            case 1:
+                transform.Translate(Vector3.up * _speed * Time.deltaTime);
+                break;
+            case 2:
+                transform.Translate(Vector3.left * _speed * Time.deltaTime);
+                break;
+            case 3:
+                transform.Translate(Vector3.right * _speed * Time.deltaTime);
+                break;
+            default:
+                transform.Translate(Vector3.down * _speed * Time.deltaTime);
+                break;
+        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D other){

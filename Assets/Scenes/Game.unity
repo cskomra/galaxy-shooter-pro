@@ -610,7 +610,6 @@ MonoBehaviour:
   _healthPowerupPoints: 1
   _speed: 5
   _thruster: {fileID: 1439440633}
-  _playerHealthFloat: 5
   _thrusterIsAvailable: 1
   _rightEngine: {fileID: 940095994}
   _leftEngine: {fileID: 2053094642}

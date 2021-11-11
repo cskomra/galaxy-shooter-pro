@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -2975369819464429163}
   - component: {fileID: -7470314656156610235}
   - component: {fileID: 1566344376105081183}
+  - component: {fileID: -6533403180836335757}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -150,3 +151,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-6533403180836335757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457700248779185882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db9dfd87e772321428d89586d9e5707e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _laserPrefab: {fileID: 5670451903350425909, guid: eb088769934b5b347b68ada2a48e2219,
+    type: 3}
+  _explosionSound: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
+  _laserSound: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
+  _speed: 4
+  _enemyPrefab: {fileID: 0}

@@ -14,8 +14,6 @@ public class Enemy : MonoBehaviour
 
     [SerializeField]
     private float _speed = 4.0f;
-    [SerializeField]
-    public GameObject _enemyPrefab;
 
     private const int _POINTS = 10;
     private const int _POWERPOINTS = 15;

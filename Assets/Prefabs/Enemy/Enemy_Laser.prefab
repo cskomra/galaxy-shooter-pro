@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8510047844983657259}
   m_Layer: 0
   m_Name: Laser_Left
-  m_TagString: Laser
+  m_TagString: EnemyLaser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 3071363036975355913}
   m_Layer: 0
   m_Name: Laser_Right
-  m_TagString: Laser
+  m_TagString: EnemyLaser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

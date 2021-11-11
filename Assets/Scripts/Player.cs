@@ -22,10 +22,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _speed = 5f;
     private float _initialSpeed;
     [SerializeField] private GameObject _thruster;
-    //[SerializeField] private float _thrusterMultiplier = 3f;
-    [SerializeField] private float _playerHealthFloat = 5f;
     [SerializeField] private bool _thrusterIsAvailable = true;
-    //[SerializeField] private bool _thrusterInUse = false;
     [SerializeField] private GameObject _rightEngine, _leftEngine;
 
     [Header("Power")]

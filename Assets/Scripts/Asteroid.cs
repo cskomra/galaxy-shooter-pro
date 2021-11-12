@@ -39,14 +39,12 @@ public class Asteroid : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other){
+        Debug.Log("Asteroid Hit!");
         if(other.tag == "Laser" || other.tag == "LaserPowerup"){
             _audioManager.PlayAudio(_explosionSound);
             _asteroidExplosion = Instantiate(_explosion, transform.position, Quaternion.identity);
             Destroy(other.gameObject);
-
-            _spawnManager.StartSpawning();
-
-            Destroy(this.gameObject, 0.5f);
+            Destroy(this.gameObject, 0.6f);
         }
     }
 

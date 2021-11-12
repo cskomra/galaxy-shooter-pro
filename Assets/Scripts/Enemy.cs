@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     private const int _POINTS = 10;
     private const int _POWERPOINTS = 15;
     private Player _player;
+    private SpawnManager _spawnManager;
 
     private Animator _enemyAnimator;
 
@@ -25,11 +26,17 @@ public class Enemy : MonoBehaviour
     private float _canFire = -1f;
     private int _counter = 0;
     private int _direction = 0;
+    public int currWaveEnemyCount = 1;
 
     void Start(){
         _player = GameObject.Find("Player").transform.GetComponent<Player>();
         if(!_player){
             Debug.LogError("Player is NULL");
+        }
+
+        _spawnManager = GameObject.Find("Spawn_Manager").transform.GetComponent<SpawnManager>();
+        if(!_spawnManager){
+            Debug.LogError("Spawn_Manager is NULL");
         }
 
         _enemyAnimator = GetComponent<Animator>();
@@ -56,7 +63,7 @@ public class Enemy : MonoBehaviour
         }
 
         ChangeDirection(_direction);
-        CalculateMovement();
+        RespawnIfOutOfBounds();
 
         if(Time.time > _canFire){
             _fireRate = Random.Range(3f, 7f);
@@ -71,17 +78,19 @@ public class Enemy : MonoBehaviour
     }
 
     void CalculateMovement(){
-
         if(transform.position.y < -4f){
             float randomX = Random.Range(-8f, 8f);
             transform.position = new Vector3(randomX, 5f, 0);
         }
     }
 
-    void LookAtPlayer(){
-        Vector3 playerPosition = _player.transform.position;
-        playerPosition.y = transform.position.y;
-        transform.LookAt(playerPosition);
+    void RespawnIfOutOfBounds(){
+        //Replaces CalculateMovement
+        //Keep within bounds: lower || upper || left || right
+        if(transform.position.y < -8f || transform.position.y > 8 || transform.position.x < -11 || transform.position.x > 11){ 
+            float randomX = Random.Range(-8f, 8f);
+            transform.position = new Vector3(randomX, 5f, 0);
+        }
     }
 
     void ChangeDirection(int caseNum){
@@ -119,7 +128,8 @@ public class Enemy : MonoBehaviour
             if(_player){
                 _player.Damage();
             }
-            
+            _spawnManager.enemyCount--;
+            Debug.Log("Dead Enemies: " + _spawnManager.enemyCount);            
         }
         else if(other.tag == ("Laser") || other.tag == "LaserPowerup"){
             
@@ -138,7 +148,10 @@ public class Enemy : MonoBehaviour
                 Debug.Log("POWER POINTS!!!!!");
                 _player.AddToScore(_POWERPOINTS);
             }
+            _spawnManager.enemyCount--;
+            Debug.Log("Dead Enemies: " + _spawnManager.enemyCount);
             
         }
+        
     }
 }

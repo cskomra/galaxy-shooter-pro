@@ -11,6 +11,7 @@ TagManager:
   - EnemyLaser
   - LaserPowerup
   - Alienite
+  - Enemy
   layers:
   - Default
   - TransparentFX

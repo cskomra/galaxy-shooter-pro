@@ -84,6 +84,10 @@ public class SpawnManager : MonoBehaviour
             Vector3 spawnPos = new Vector3(Random.Range(-8f, 8f), 7, 0);
             float waitTime = Random.Range(3f, 7f);
             GameObject powerupObject = Instantiate(powerups[randomPowerUp], spawnPos, Quaternion.identity);
+            /* if(randomPowerUp == 5){
+                //powerupObject.GetComponentInChildren<SpriteRenderer>().color = Color.green;
+                powerupObject.GetComponent<SpriteRenderer>().color = Color.green;
+            } */
             yield return new WaitForSeconds(waitTime);
         }
     }

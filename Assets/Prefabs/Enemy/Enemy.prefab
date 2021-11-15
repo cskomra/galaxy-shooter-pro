@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -6533403180836335757}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -165,7 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _laserPrefab: {fileID: 5670451903350425909, guid: eb088769934b5b347b68ada2a48e2219,
     type: 3}
-  _Player: {fileID: 0}
   _explosionSound: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
   _laserSound: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _speed: 4
+  currWaveEnemyCount: 1

@@ -4,18 +4,13 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject _enemyPrefab;
+    [SerializeField] private GameObject _enemyPrefab;
+    [SerializeField] private GameObject[] powerups;
+    [SerializeField] private GameObject _enemyContainer;
+    [SerializeField] private bool _keepSpawning = true;
+    //[SerializeField] private GameObject _alienitePrefab;
     
-    [SerializeField]
-    private GameObject[] powerups;
-    [SerializeField]
-    private GameObject _enemyContainer;
-    [SerializeField]
-    private bool _keepSpawning = true;
     private int _waveNum = 1;
-    private int _increaseEnemiesMultiplier = 2;
-
     public int enemyCount = 0;
     public bool sendNewWave = false;
 
@@ -23,7 +18,7 @@ public class SpawnManager : MonoBehaviour
 
     void Start(){
         //seed initial waveData: (waveNum, enemyCount)
-        _waveData.Add(1, 2);
+        _waveData.Add(1, 3);
         StartSpawning();
     }
 
@@ -36,6 +31,7 @@ public class SpawnManager : MonoBehaviour
     public void StartSpawning(){
         SendEnemyWave();
         StartCoroutine(SpawnPowerups());
+        //StartCoroutine(SpawnAlienite(60f));
     }
 
     private void SendEnemyWave(){
@@ -47,9 +43,11 @@ public class SpawnManager : MonoBehaviour
             enemy.transform.parent = _enemyContainer.transform;
             }
         }
+        Debug.Log("Enemies on the scene = " + GameObject.FindGameObjectsWithTag("Enemy").Length);
         //seed next wave
-        _waveNum += 1;
-        _waveData.Add(_waveNum, (_waveNum * _increaseEnemiesMultiplier));
+        _waveNum++;
+        int numEnemies = _waveNum++;
+        _waveData.Add(_waveNum, (numEnemies));
     }
 
     private Vector3 RandomSpawnPos(){
@@ -69,14 +67,23 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    private IEnumerator SpawnPowerups(){
+    /* private IEnumerator SpawnAlienite(float waitToSpawn){
+        yield return new WaitForSeconds(60f);
+        Debug.Log("Keep Spawning Alienite = " + _keepSpawning);
+        while(_keepSpawning){
+            Vector3 spawnPos = new Vector3(Random.Range(-8f, 8f), 6, 0);
+            GameObject alienite = Instantiate(_alienitePrefab, spawnPos, Quaternion.identity);
+            yield return new WaitForSeconds(waitToSpawn);
+        }
+    } */
 
+    private IEnumerator SpawnPowerups(){
         yield return new WaitForSeconds(3.0f);
         while(_keepSpawning){
             int randomPowerUp = Random.Range(0, powerups.Length);
             Vector3 spawnPos = new Vector3(Random.Range(-8f, 8f), 7, 0);
             float waitTime = Random.Range(3f, 7f);
-            GameObject tripleShotPowerup = Instantiate(powerups[randomPowerUp], spawnPos, Quaternion.identity);
+            GameObject powerupObject = Instantiate(powerups[randomPowerUp], spawnPos, Quaternion.identity);
             yield return new WaitForSeconds(waitTime);
         }
     }

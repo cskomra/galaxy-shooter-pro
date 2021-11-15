@@ -29,8 +29,8 @@ public class Player : MonoBehaviour
     private float _powerupDuration = 5.0f;
     [SerializeField]
     private int _shotsRemaining = 15;
-    [SerializeField]
-    private int _ammoPowerupPoints = 2;
+    [SerializeField] private int _ammoPowerupPoints = 10;
+    private int _alienitePoints = 1;
     [SerializeField] private float _fireRate = 0.15f;
     private bool _laserPowerOn = false;
     private float nextFire = 0.0f;
@@ -213,6 +213,7 @@ public class Player : MonoBehaviour
     }
 
     public void Damage(){
+        _audioManager.PlayAudio(_explosionSound);
         _numHits++;
         Debug.Log("numHits = " + _numHits);
         if(_hasShield){
@@ -304,6 +305,10 @@ public class Player : MonoBehaviour
                 Debug.Log(powerupId + " Health Collected");
                 AddToHealth(_healthPowerupPoints);
                 break;
+            case 5: //Health
+                Debug.Log(powerupId + " Alienited");
+                LoseAmmo(_alienitePoints);
+                break;
             default:
                 Debug.Log("unknown powerup");
                 break;
@@ -335,6 +340,12 @@ public class Player : MonoBehaviour
         _shotsRemaining += ammo;
         _uiManager.UpdateAmmo(_shotsRemaining);
     }
+
+    public void LoseAmmo(int ammo){
+        _shotsRemaining -= ammo;
+        _uiManager.UpdateAmmo(_shotsRemaining);
+    }
+    //TODO - refactor to AmmoManager
 
     private void AddToHealth(int health){
         if(_lives < 3){

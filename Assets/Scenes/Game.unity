@@ -534,7 +534,7 @@ MonoBehaviour:
   _rightEngine: {fileID: 940095994}
   _leftEngine: {fileID: 2053094642}
   _shotsRemaining: 15
-  _ammoPowerupPoints: 2
+  _ammoPowerupPoints: 10
   _fireRate: 0.15
   _laserPrefab: {fileID: 509711912147292006, guid: 59db0eb62a324074b9428dcc164cd8b0,
     type: 3}
@@ -2375,6 +2375,7 @@ MonoBehaviour:
   - {fileID: 1901932519179518729, guid: a6d42af21d87b6644910dc887e2e344b, type: 3}
   - {fileID: 2010972053231725134, guid: 7e608c6acbfb79243b7783675c5f7e51, type: 3}
   - {fileID: 5095342633688374792, guid: 14cf938c78a8ec7428a076d51c83200f, type: 3}
+  - {fileID: 6740241937055084647, guid: 9a290a57476cf4046b64e4ed538d0a81, type: 3}
   _enemyContainer: {fileID: 349824616}
   _keepSpawning: 1
   enemyCount: 0

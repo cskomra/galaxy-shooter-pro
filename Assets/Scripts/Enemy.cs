@@ -117,7 +117,9 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other){
         
-        _audioManager.PlayAudio(_explosionSound);
+        if(_audioManager){
+            _audioManager.PlayAudio(_explosionSound);
+        }
         
         if(other.tag == ("Player")){
             _enemyAnimator.SetTrigger("OnEnemyDeath");
@@ -139,7 +141,6 @@ public class Enemy : MonoBehaviour
             
             Destroy(GetComponent<Collider2D>(), 2f);
             Destroy(this.gameObject, 2f);
-            
             
             if(other.tag == "Laser"){
                 Debug.Log("Adding to Score");

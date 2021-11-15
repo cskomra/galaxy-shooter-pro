@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
     private int _alienitePoints = 1;
     [SerializeField] private float _fireRate = 0.15f;
     private bool _laserPowerOn = false;
-    private float nextFire = 0.0f;
+    public float nextFire = 0.0f;
     private float _laserPowerTime = 0.0f;
     [SerializeField] private GameObject _laserPrefab;
     [SerializeField] private GameObject _trippleShotPrefab;
@@ -212,10 +212,16 @@ public class Player : MonoBehaviour
         
     }
 
-    public void Damage(){
-        _audioManager.PlayAudio(_explosionSound);
+    public void Damage(string perpetrator){
+        _audioManager.PlayAudio(_explosionSound); //also played in Enemy.OnCollision
         _numHits++;
         Debug.Log("numHits = " + _numHits);
+
+        if(perpetrator == "AlienitedLaser"){
+            Debug.Log("HIT by ** Alientited Laser **");
+            AddToScore(-5);
+        }
+
         if(_hasShield){
             switch(_numHits){
                 case 2: //1st hit, change color to #096cf7

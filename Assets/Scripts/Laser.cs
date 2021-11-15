@@ -41,9 +41,12 @@ public class Laser : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other){
+        Debug.Log("This laser is a: " + this.tag);
         if(other.tag == "Player" && _isEnemyLaser == true){
             Player player = other.GetComponent<Player>();
-            if(player) player.Damage();
+            if(player){
+                player.Damage(this.tag);
+            } 
         }
     }
 

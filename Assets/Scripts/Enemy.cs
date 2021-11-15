@@ -125,11 +125,7 @@ public class Enemy : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other){
-        
-        /* if(_audioManager){
-            _audioManager.PlayAudio(_explosionSound);
-        } */
-        
+             
         if(other.tag == ("Player")){
             _audioManager.PlayAudio(_explosionSound);
 
@@ -139,7 +135,7 @@ public class Enemy : MonoBehaviour
             Destroy(GetComponent<Collider2D>(), 2f);
             Destroy(this.gameObject, 2f);
             if(_player){
-                _player.Damage();
+                _player.Damage(this.tag);
             }
             _spawnManager.enemyCount--;
             Debug.Log("Dead Enemies: " + _spawnManager.enemyCount);            
@@ -168,7 +164,6 @@ public class Enemy : MonoBehaviour
         else if(other.tag == "Alienite"){
             _audioManager.PlayAudio(_explosionSound);
             Debug.Log("Inside Alienite");
-            // set pointsFlag on laser (if pointsFlag == true){Score--}
             _laserIsAlienited = true;
         }
         

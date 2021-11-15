@@ -5,12 +5,15 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField]
     private GameObject _laserPrefab;
+    [SerializeField]
+    private GameObject _laserAlienitedPrefab;
     private AudioManager _audioManager;
 
     [SerializeField]
     private AudioClip _explosionSound;
     [SerializeField]
     private AudioClip _laserSound;
+    private bool _laserIsAlienited = false;
 
     [SerializeField]
     private float _speed = 4.0f;
@@ -68,7 +71,13 @@ public class Enemy : MonoBehaviour
         if(Time.time > _canFire){
             _fireRate = Random.Range(3f, 7f);
             _canFire = Time.time + _fireRate;
-            GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+            GameObject enemyLaser;
+            if(_laserIsAlienited){
+                enemyLaser = Instantiate(_laserAlienitedPrefab, transform.position, Quaternion.identity);
+            }else{
+                enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+            }
+            
             Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
 
             for(int i = 0; i < lasers.Length; i++){
@@ -152,6 +161,11 @@ public class Enemy : MonoBehaviour
             _spawnManager.enemyCount--;
             Debug.Log("Dead Enemies: " + _spawnManager.enemyCount);
             
+        }
+        else if(other.tag == "Alienite"){
+            Debug.Log("Inside Alienite");
+            // set pointsFlag on laser (if pointsFlag == true){Score--}
+            _laserIsAlienited = true;
         }
         
     }

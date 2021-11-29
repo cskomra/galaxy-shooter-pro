@@ -6,7 +6,6 @@ public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private GameObject _enemyContainer;
-    private bool _enemyHasShield = false;
     [SerializeField] private GameObject[] _frequentPickups;
     [SerializeField] private GameObject[] _rarePickups;
 
@@ -54,7 +53,6 @@ public class SpawnManager : MonoBehaviour
             for(int i = 0; i < _enemyCount; i++){
                 if(i%2 != 0){
                     //odd enemy --> enable shield
-                    _enemyHasShield = true;
                     GameObject enemy = Instantiate(_enemyPrefab, RandomSpawnPos(), Quaternion.identity);
                     enemy.transform.parent = _enemyContainer.transform;
                     enemy.GetComponent<Enemy>().enemyShield.SetActive(true);

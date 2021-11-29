@@ -3,24 +3,23 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject _laserPrefab;
-    [SerializeField]
-    private GameObject _laserAlienitedPrefab;
+    [SerializeField] private GameObject _laserPrefab;
+    [SerializeField] private GameObject _laserAlienitedPrefab;
     private AudioManager _audioManager;
 
-    [SerializeField]
-    private AudioClip _explosionSound;
-    [SerializeField]
-    private AudioClip _laserSound;
-    private bool _laserIsAlienited = false;
+    private Rigidbody2D enemyRb;
 
-    [SerializeField]
-    private float _speed = 4.0f;
+    [SerializeField] private AudioClip _explosionSound;
+    [SerializeField] private AudioClip _laserSound;
+    private bool _laserIsAlienited = false;
+    
+    [SerializeField] private float _speed = 4.0f;
+    private float _gravitateSpeed = 0.8f;
 
     private const int _POINTS = 10;
     private const int _POWERPOINTS = 15;
-    private Player _player;
+    private Player _playerScript;
+    
     private SpawnManager _spawnManager;
 
     private Animator _enemyAnimator;
@@ -31,10 +30,12 @@ public class Enemy : MonoBehaviour
     private int _direction = 0;
     public int currWaveEnemyCount = 1;
     [SerializeField] public GameObject enemyShield;
+    private float _distanceToPlayer = 0f;
+    private GameManager _gameManager;
 
     void Start(){
-        _player = GameObject.Find("Player").transform.GetComponent<Player>();
-        if(!_player){
+        _playerScript = GameObject.Find("Player").transform.GetComponent<Player>();
+        if(!_playerScript){
             Debug.LogError("Player is NULL");
         }
 
@@ -53,10 +54,20 @@ public class Enemy : MonoBehaviour
             Debug.LogError("Audio Manager is NULL.");
         }
 
+        enemyRb = GetComponent<Rigidbody2D>();
+        if(!enemyRb){
+            Debug.LogError("Enemy RigidBody is NULL.");
+        }
+
+        _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
+        if(!_gameManager){
+            Debug.Log("Game Manager is NULL.");
+        }
+
     }
 
     void Update()
-    {
+    {   
         
         if(_counter == 60){
             int randomInt = Random.Range(0,3);
@@ -65,8 +76,17 @@ public class Enemy : MonoBehaviour
         }else{
             _counter++;
         }
-
-        ChangeDirection(_direction);
+        
+        if(!_gameManager.isGameOver()){
+            _distanceToPlayer = Vector3.Distance(this.transform.position, _playerScript.transform.position);
+            Debug.Log("Distance To Player: " + _distanceToPlayer);
+            if( _distanceToPlayer <= 5.0f){
+                enemyRb.AddForce((_playerScript.transform.position - transform.position) * _gravitateSpeed);
+            }else{
+                ChangeDirection(_direction);
+            }
+        }
+        
         RespawnIfOutOfBounds();
 
         if(Time.time > _canFire){
@@ -135,8 +155,8 @@ public class Enemy : MonoBehaviour
             
             Destroy(GetComponent<Collider2D>(), 2f);
             Destroy(this.gameObject, 2f);
-            if(_player){
-                _player.Damage(this.tag);
+            if(_playerScript){
+                _playerScript.Damage(this.tag);
             }
             _spawnManager._enemyCount--;
         }
@@ -155,9 +175,9 @@ public class Enemy : MonoBehaviour
                 Destroy(this.gameObject, 2f);
                 
                 if(other.tag == "Laser"){
-                    _player.AddToScore(_POINTS);
+                    _playerScript.AddToScore(_POINTS);
                 }else{
-                    _player.AddToScore(_POWERPOINTS);
+                    _playerScript.AddToScore(_POWERPOINTS);
                 }
                 _spawnManager._enemyCount--;
             }

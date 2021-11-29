@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
 
         _cameraShake = GameObject.FindWithTag("MainCamera").transform.GetComponent<CameraShake>();
         if(!_cameraShake){
-            Debug.Log("Main Camera is NULL.");
+            Debug.LogError("Main Camera is NULL.");
         }
 
         transform.position = new Vector3(0, -3.8f, 0);
@@ -161,7 +161,6 @@ public class Player : MonoBehaviour
     }
 
     IEnumerator ThrusterCoolDownRoutine(){
-        Debug.Log("Inside ThrusterCoolDownRoutine");
         yield return new WaitForSeconds(1f);
 
         while(!_thrusterIsAvailable){
@@ -183,21 +182,14 @@ public class Player : MonoBehaviour
             if(Input.GetKeyDown(KeyCode.LeftShift)){
                 _speed += thrustSpeed;
                 _thruster.SetActive(true);
-                //_thrusterInUse = true;
 
                 //Use thrusters 
                 _playerHealth.health -= Time.deltaTime * 200.0f;
-                //_playerHealthFloat -= Time.deltaTime * 5.0f;
-                //Debug.Log("Mandage SPEED: " + _thrusterPowerLevel.ToString());
-                //_uiManager.UpdateThrusterSlider(_thrusterPowerLevel);
 
-                //Debug.Log("Inside ManageSpeed. _thrusterPowerLevel is " + _thrusterPowerLevel.ToString());
                 // enter cool down
                 if(_playerHealth.health <= 10f){
-                    //_uiManager.ThrusterSliderColor(Color.red);
                     _thruster.SetActive(false);
                     _thrusterIsAvailable = false;
-                    //_thrusterInUse = false;
                     _playerHealth.health = 0;
                     ResetSpeed();
                 }
@@ -206,7 +198,6 @@ public class Player : MonoBehaviour
             if(Input.GetKeyUp(KeyCode.LeftShift)){
                 _speed -= thrustSpeed;
                 _thruster.SetActive(false);
-                //_thrusterInUse = false;
             }
         }
         
@@ -215,10 +206,8 @@ public class Player : MonoBehaviour
     public void Damage(string perpetrator){
         _audioManager.PlayAudio(_explosionSound); //also played in Enemy.OnCollision
         _numHits++;
-        Debug.Log("numHits = " + _numHits);
 
         if(perpetrator == "AlienitedLaser"){
-            Debug.Log("HIT by ** Alientited Laser **");
             AddToScore(-5);
         }
 
@@ -244,7 +233,6 @@ public class Player : MonoBehaviour
         if(_numHits == 2){
             _lives -= 1;
             _uiManager.UpdateLives(_lives);  
-            Debug.Log("Lives: " + _lives);
             _numHits = 0;
         }
 
@@ -255,7 +243,6 @@ public class Player : MonoBehaviour
     }
 
     void EngineManager(int lives){
-        Debug.Log("Live = " + _lives.ToString());
         switch(_lives){
             case 3: // both engines working
                 _leftEngine.SetActive(false);

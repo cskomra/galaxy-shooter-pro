@@ -30,6 +30,7 @@ public class Enemy : MonoBehaviour
     private int _counter = 0;
     private int _direction = 0;
     public int currWaveEnemyCount = 1;
+    [SerializeField] public GameObject enemyShield;
 
     void Start(){
         _player = GameObject.Find("Player").transform.GetComponent<Player>();
@@ -137,33 +138,32 @@ public class Enemy : MonoBehaviour
             if(_player){
                 _player.Damage(this.tag);
             }
-            _spawnManager.enemyCount--;
-            Debug.Log("Dead Enemies: " + _spawnManager.enemyCount);            
+            _spawnManager._enemyCount--;
         }
         else if(other.tag == ("Laser") || other.tag == "LaserPowerup"){
-            _audioManager.PlayAudio(_explosionSound);
 
-            Destroy(other.gameObject);
-            _enemyAnimator.SetTrigger("OnEnemyDeath");
-            _speed = 0;
-            
-            Destroy(GetComponent<Collider2D>(), 2f);
-            Destroy(this.gameObject, 2f);
-            
-            if(other.tag == "Laser"){
-                Debug.Log("Adding to Score");
-                _player.AddToScore(_POINTS);
+            if(enemyShield.activeSelf){
+                enemyShield.SetActive(false);
             }else{
-                Debug.Log("POWER POINTS!!!!!");
-                _player.AddToScore(_POWERPOINTS);
+                _audioManager.PlayAudio(_explosionSound);
+
+                Destroy(other.gameObject);
+                _enemyAnimator.SetTrigger("OnEnemyDeath");
+                _speed = 0;
+                
+                Destroy(GetComponent<Collider2D>(), 2f);
+                Destroy(this.gameObject, 2f);
+                
+                if(other.tag == "Laser"){
+                    _player.AddToScore(_POINTS);
+                }else{
+                    _player.AddToScore(_POWERPOINTS);
+                }
+                _spawnManager._enemyCount--;
             }
-            _spawnManager.enemyCount--;
-            Debug.Log("Dead Enemies: " + _spawnManager.enemyCount);
-            
         }
         else if(other.tag == "Alienite"){
             _audioManager.PlayAudio(_explosionSound);
-            Debug.Log("Inside Alienite");
             _laserIsAlienited = true;
         }
         

@@ -24,17 +24,17 @@ public class SpawnManager : MonoBehaviour
 
     void Update(){
         if(enemyCount == 0){
-            SendEnemyWave(); //send current wave
+            SpawnEnemyWave(); //send current wave
         }
     }
 
     public void StartSpawning(){
-        SendEnemyWave();
+        SpawnEnemyWave();
         StartCoroutine(SpawnPowerups());
         //StartCoroutine(SpawnAlienite(60f));
     }
 
-    private void SendEnemyWave(){
+    private void SpawnEnemyWave(){
         Debug.Log("Wave Num: " + _waveNum);
         enemyCount = _waveData[_waveNum];
         if(_keepSpawning){

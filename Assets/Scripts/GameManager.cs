@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEditor;
+//using UnityEditor;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,12 +15,12 @@ public class GameManager : MonoBehaviour
         }
 
         //if escape key pressed, quit application
-        if(Input.GetKey(KeyCode.Escape)){
+        /* if(Input.GetKey(KeyCode.Escape)){
             if(EditorApplication.isPlaying){
                 EditorApplication.isPlaying = false;
             }
             Application.Quit();
-        }
+        } */
 
     }
 

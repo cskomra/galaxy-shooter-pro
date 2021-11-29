@@ -5,33 +5,45 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject _enemyPrefab;
-    [SerializeField] private GameObject[] powerups;
     [SerializeField] private GameObject _enemyContainer;
+    [SerializeField] private GameObject[] frequentPickups;
+    private float frequentSpawnFrequency = 2.0f;
+    private float rareSpawnFrequency = 3.0f;
+    
+    //TODO: Get numWaves as Player Choice @begin
+    [SerializeField] private int numWavesInGame = 3;
+    [SerializeField] private GameObject[] rarePickups;
+
     [SerializeField] private bool _keepSpawning = true;
-    //[SerializeField] private GameObject _alienitePrefab;
     
     private int _waveNum = 1;
     public int enemyCount = 0;
     public bool sendNewWave = false;
 
     private IDictionary<int, int> _waveData = new Dictionary<int, int>();
-
+    
     void Start(){
-        //seed initial waveData: (waveNum, enemyCount)
-        _waveData.Add(1, 3);
+        initWaveData();
         StartSpawning();
     }
 
     void Update(){
-        if(enemyCount == 0){
+        if(enemyCount == 0 && _waveNum <= _waveData.Count){
             SpawnEnemyWave(); //send current wave
+        }
+    }
+
+    private void initWaveData(){
+         for(int i = 1; i <= numWavesInGame; i++){
+             //waveData: (waveNum, enemyCount)
+            _waveData.Add(i, i+1);
         }
     }
 
     public void StartSpawning(){
         SpawnEnemyWave();
-        StartCoroutine(SpawnPowerups());
-        //StartCoroutine(SpawnAlienite(60f));
+        StartCoroutine(SpawnPickups(rarePickups, rareSpawnFrequency));
+        StartCoroutine(SpawnPickups(frequentPickups, frequentSpawnFrequency));
     }
 
     private void SpawnEnemyWave(){
@@ -46,8 +58,6 @@ public class SpawnManager : MonoBehaviour
         Debug.Log("Enemies on the scene = " + GameObject.FindGameObjectsWithTag("Enemy").Length);
         //seed next wave
         _waveNum++;
-        int numEnemies = _waveNum++;
-        _waveData.Add(_waveNum, (numEnemies));
     }
 
     private Vector3 RandomSpawnPos(){
@@ -67,28 +77,13 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    /* private IEnumerator SpawnAlienite(float waitToSpawn){
-        yield return new WaitForSeconds(60f);
-        Debug.Log("Keep Spawning Alienite = " + _keepSpawning);
-        while(_keepSpawning){
-            Vector3 spawnPos = new Vector3(Random.Range(-8f, 8f), 6, 0);
-            GameObject alienite = Instantiate(_alienitePrefab, spawnPos, Quaternion.identity);
-            yield return new WaitForSeconds(waitToSpawn);
-        }
-    } */
-
-    private IEnumerator SpawnPowerups(){
-        yield return new WaitForSeconds(3.0f);
+    private IEnumerator SpawnPickups(GameObject[] powerups, float spawnFrequency){
+        yield return new WaitForSeconds(spawnFrequency);
         while(_keepSpawning){
             int randomPowerUp = Random.Range(0, powerups.Length);
             Vector3 spawnPos = new Vector3(Random.Range(-8f, 8f), 7, 0);
-            float waitTime = Random.Range(3f, 7f);
             GameObject powerupObject = Instantiate(powerups[randomPowerUp], spawnPos, Quaternion.identity);
-            /* if(randomPowerUp == 5){
-                //powerupObject.GetComponentInChildren<SpriteRenderer>().color = Color.green;
-                powerupObject.GetComponent<SpriteRenderer>().color = Color.green;
-            } */
-            yield return new WaitForSeconds(waitTime);
+            yield return new WaitForSeconds(spawnFrequency);
         }
     }
 

@@ -57,8 +57,10 @@ public class SpawnManager : MonoBehaviour
                     enemy.transform.parent = _enemyContainer.transform;
                     enemy.GetComponent<Enemy>().enemyShield.SetActive(true);
                 }else{
+                    // even enemy --> enable reverse fire (SmartEnemy)
                     GameObject enemy = Instantiate(_enemyPrefab, RandomSpawnPos(), Quaternion.identity);
                     enemy.transform.parent = _enemyContainer.transform;
+                    enemy.tag = "SmartEnemy";
                 }
                 
             }

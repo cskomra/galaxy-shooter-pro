@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     private int _score;
     private AudioManager _audioManager;
     private CameraShake _cameraShake;
+    private GameManager _gameManager;
 
 
     [Header("Health")]
@@ -60,6 +61,11 @@ public class Player : MonoBehaviour
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         if(!_uiManager){
             Debug.LogError("UI Manager is NULL.");
+        }
+
+        _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
+        if(!_gameManager){
+            Debug.Log("Game Manager is NULL.");
         }
 
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
@@ -151,6 +157,9 @@ public class Player : MonoBehaviour
         }else if(transform.position.x <= leftBounds){
             transform.position = new Vector3(-leftBounds, transform.position.y, 0);
         }
+
+        //post position to Game Manager
+        _gameManager.playerPosition = transform.position;
     }
 
     void ResetSpeed(){

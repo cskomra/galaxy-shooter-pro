@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
     private bool _laserIsAlienited = false;
     
     [SerializeField] private float _speed = 4.0f;
-    private float _gravitateSpeed = 0.8f;
+    private float _gravitateSpeed = 0.6f;
 
     private const int _POINTS = 10;
     private const int _POWERPOINTS = 15;
@@ -69,20 +69,20 @@ public class Enemy : MonoBehaviour
     void Update()
     {   
         
-        if(_counter == 60){
-            int randomInt = Random.Range(0,3);
-            _direction = randomInt;
-            _counter = 0;
-        }else{
-            _counter++;
-        }
+        
         
         if(!_gameManager.isGameOver()){
-            _distanceToPlayer = Vector3.Distance(this.transform.position, _playerScript.transform.position);
-            Debug.Log("Distance To Player: " + _distanceToPlayer);
+            _distanceToPlayer = Vector3.Distance(this.transform.position, _gameManager.playerPosition);
             if( _distanceToPlayer <= 5.0f){
-                enemyRb.AddForce((_playerScript.transform.position - transform.position) * _gravitateSpeed);
+                enemyRb.AddForce((_gameManager.playerPosition - transform.position) * _gravitateSpeed);
             }else{
+                if(_counter == 60){
+                    int randomInt = Random.Range(0,3);
+                    _direction = randomInt;
+                    _counter = 0;
+                }else{
+                    _counter++;
+                }
                 ChangeDirection(_direction);
             }
         }
@@ -93,16 +93,21 @@ public class Enemy : MonoBehaviour
             _fireRate = Random.Range(3f, 7f);
             _canFire = Time.time + _fireRate;
             GameObject enemyLaser;
+            Vector3 currPostion = transform.position;
             if(_laserIsAlienited){
-                enemyLaser = Instantiate(_laserAlienitedPrefab, transform.position, Quaternion.identity);
+                enemyLaser = Instantiate(_laserAlienitedPrefab, currPostion, Quaternion.identity);
             }else{
-                enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+                enemyLaser = Instantiate(_laserPrefab, currPostion, Quaternion.identity);
             }
             
             Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
 
             for(int i = 0; i < lasers.Length; i++){
-                lasers[i].ActivateEnemyLaser();
+                bool hasReverseFire = false;
+                if(tag == "SmartEnemy" && (currPostion.y < _gameManager.playerPosition.y)){
+                    hasReverseFire = true;
+                }
+                lasers[i].ActivateEnemyLaser(hasReverseFire);
             }
         }
     }
@@ -115,8 +120,6 @@ public class Enemy : MonoBehaviour
     }
 
     void RespawnIfOutOfBounds(){
-        //Replaces CalculateMovement
-        //Keep within bounds: lower || upper || left || right
         if(transform.position.y < -8f || transform.position.y > 8 || transform.position.x < -11 || transform.position.x > 11){ 
             float randomX = Random.Range(-8f, 8f);
             transform.position = new Vector3(randomX, 5f, 0);
